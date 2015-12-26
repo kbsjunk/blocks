@@ -1,0 +1,189 @@
+model: Order
+modelNamespace: App
+#title: Customer Order
+title:
+  singular: Customer Order
+  plural: All Customer Orders
+controllerNamespace: App\Controllers
+#table: orders
+#connection: default
+primaryKey: id, #string
+perPage: 15
+#incrementing: true
+increments: id #, false, big
+softDeletes: true #, false
+timestamps: true #, false, nullable
+#rememberToken: true #, false
+migration:
+  engine: MyISAM
+  charset: utf8
+  collation: utf8_unicode_ci
+  #patternFile: migrations/custom
+  statements:
+    - DB::statement('ALTER TABLE {:table:} ADD location POINT NOT NULL;');
+    - ALTER TABLE {:table:} ADD SPATIAL INDEX index_point(location)
+hidden:
+  - field1
+  - field2
+visible:
+  - field1
+  - field2
+fillable:
+  - field1
+  - field2
+guarded:
+  - field1
+  - field2
+touches:
+  - relation1
+  - relation2
+with:
+  - relation1
+  - relation2
+observables: [] #TBA
+casts:
+  test_big_integer: integer
+  test_json: json
+relations:
+  - name: user
+    model: App\User
+    type: belongsTo
+    foreignKey: user_id
+    otherKey: id
+  - name: items
+    model: App\Item
+    type: hasMany
+    foreignKey: order_id
+    otherKey: id
+  # - name: employees
+  #   model: App\Person
+  #   type: belongsToMany
+  #   table: order_person
+  #   foreignKey: order_id
+  #   otherKey: order_id
+  #   withPivot: [hire_date]
+  #   withTimestamps: true
+  - name: groupEmployees
+    model: App\Person
+    throughModel: App\
+    type: hasManyThrough
+    table: order_person
+    foreignKey: order_id
+    otherKey: order_id
+    withPivot: [hire_date]
+    withTimestamps: true
+fields:
+  # - name: test_id
+  #  type: increments
+  # - name: test_big_increments
+  #  type: bigIncrements
+  # - timestamps
+  # - nullableTimestamps
+  # - rememberToken
+  - name: test_big_integer
+    type: bigInteger
+    label: Big integer (default locale)
+    help: Please enter a big integer (default locale)
+  - name: test_binary
+    type: binary
+    label:
+      en: Binary Number (English)
+      de: Binärzahl (Deutsch)
+      es: Número binario (español)
+    help:
+      en: Please enter a binary number (English)
+      de: Bitte eine Binärzahl eingeben (Deutsch)
+      es: Por favor introduzca un número binario (español)
+  - name: test_boolean
+    type: boolean
+  - name: test_char_4
+    type: char
+    length: 4
+    charset: utf8
+    collation: utf8_unicode_ci
+  - name: test_date
+    type: date
+  - name: test_datetime
+    type: dateTime
+  - name: test_decimal
+    type: decimal
+    precision: 5
+    scale: 2
+  - name: test_double
+    type: double
+    precision: 15
+    scale: 8
+  - name: test_enum
+    type: enum
+    values: [foo, bar, baz]
+  - name: test_float
+    type: float
+  - name: test_integer
+    type: integer
+    comment: This is an integer!
+    first: true
+    validation:
+      create: required|numeric
+      update: required|numeric 
+  - name: user_id
+    type: unsignedInteger
+  - name: test_unsigned_integer
+    type: integer
+    default: 20
+    nullable: true
+    unsigned: true
+    validation: required|unique
+  - name: test_unsigned_integer_2
+    type: unsignedInteger
+    after: test_enum
+  - name: test_json
+    type: text #json
+  - name: test_jsonb
+    type: text #json
+  - name: test_long_text
+    type: longText
+  - name: test_medium_integer
+    type: mediumInteger
+  - name: test_medium_text
+    type: mediumText
+  - name: test_morphable
+    type: morphs
+    indexName: index_name
+  - name: test_slug
+    type: string
+    index: unique
+    validation:
+      create: required|alpha_dash|unique#,test_tables,:id,id,where1,value1,where2,value2
+      update: \*
+  - name: test_small_integer
+    type: smallInteger
+    cast: string
+  - name: test_string
+    type: string
+  - name: test_string_100
+    type: string
+    length: 100
+    required: true
+    fillable: true
+    validation: required|max:100
+  - name: test_text
+    type: text
+  - name: test_time
+    type: time
+  - name: test_tiny_integer
+    type: tinyInteger
+  - name: test_timestamp
+    type: timestamp
+  - name: test_uid
+    type: uuid
+    index: true #, unique
+indexes:
+    - fields: [test_time, test_string_100]
+      index: unique
+      length: 255
+      indexName: string_time_unique
+    - fields: [test_string, test_small_integer]
+      index: unique
+      name: index_test_1
+    - field: user_id
+      index: foreign

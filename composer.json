@@ -1,0 +1,11 @@
+{
+    "name": "kitbs/blocks",
+    "autoload": {
+        "psr-4": {
+            "Kitbs\\Blocks\\": "src/"
+        }
+    },
+    "require": {
+        "doctrine/dbal": "^2.5"
+    }
+}
